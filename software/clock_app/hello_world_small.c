@@ -79,8 +79,8 @@
  */
 
 #include "sys/alt_stdio.h"
+#include <unistd.h>
 #include "app/include/app_buttons.h"
-#include "altera_avalon_pio_regs.h"
 
 int main()
 {
@@ -88,8 +88,6 @@ int main()
 
   init_timer_irq();
   init_btns_irqs();
-
-
 
   while (1);
 
