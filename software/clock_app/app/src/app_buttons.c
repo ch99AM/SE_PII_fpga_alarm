@@ -11,23 +11,33 @@
 void handle_btn_conf_irs()
 {
 	IOWR_ALTERA_AVALON_PIO_EDGE_CAP(REG_BCONF_BASE, 0);
-	alt_putstr("Conf!\n");
+//	alt_putstr("Conf!\n");
+	change_mode();
 	IORD_ALTERA_AVALON_PIO_EDGE_CAP(REG_BCONF_BASE);
 }
 
 void handle_btn_up_irs()
 {
-	alt_putstr("Up!\n");
+	IOWR_ALTERA_AVALON_PIO_EDGE_CAP(REG_BUP_BASE, 0);
+//	alt_putstr("Up!\n");
+	add_time();
+	IORD_ALTERA_AVALON_PIO_EDGE_CAP(REG_BUP_BASE);
 }
 
 void handle_btn_down_irs()
 {
-	alt_putstr("Down!\n");
+	IOWR_ALTERA_AVALON_PIO_EDGE_CAP(REG_BDOWN_BASE, 0);
+//	alt_putstr("Down!\n");
+	substract_time();
+	IORD_ALTERA_AVALON_PIO_EDGE_CAP(REG_BDOWN_BASE);
 }
 
 void handle_btn_next_irs()
 {
-	alt_putstr("Next!\n");
+	IOWR_ALTERA_AVALON_PIO_EDGE_CAP(REG_BNEXT_BASE, 0);
+//	alt_putstr("Next!\n");
+	next_var();
+	IORD_ALTERA_AVALON_PIO_EDGE_CAP(REG_BNEXT_BASE);
 }
 
 void init_btns_irqs()
