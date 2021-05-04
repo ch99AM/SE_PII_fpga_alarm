@@ -79,14 +79,17 @@
  */
 
 #include "sys/alt_stdio.h"
-#include "app/include/app_timer.h"
+#include <unistd.h>
+#include "app/include/app_buttons.h"
 
 int main()
 {
   alt_putstr("Hello from Nios II!\n");
 
   init_timer_irq();
-  /* Event loop never exits. */
+  init_btns_irqs();
+  init_status();
+
   while (1);
 
   return 0;
