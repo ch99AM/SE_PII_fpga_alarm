@@ -1,17 +1,14 @@
 
 #include "../include/app_timer.h"
-#include "../include/app_clock_manager.h"
-#include "../include/app_alarm.h"
-#include "../include/app_leds_manager.h"
 
 void handle_timer_interrupts(void* context) {
 	IOWR_ALTERA_AVALON_TIMER_STATUS(TIMER_BASE, 0);
 	increase_time();
-	alt_putstr("Interrupts!");
+	alt_putstr("Interrupts!\n");
 }
 
 void init_timer_irq() {
-	init_hour(22, 59, 59);
+	init_hour(22, 59, 58);
 	init_leds();
 	set_alarm(23, 0);
 	/* Register the ISR. */

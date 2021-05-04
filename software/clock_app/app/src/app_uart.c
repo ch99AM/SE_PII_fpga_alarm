@@ -119,10 +119,10 @@ int read_msg(){
 		return 0;
 	}
 	if(conf_type == 'H' || conf_type == 'h'){
-		//Llamar a cambiar la hora
+		init_hour((short) hora, (short) min, (short) seg);
 		return 1;
 	}else if(conf_type == 'A' || conf_type == 'a'){
-		//Llamar a configurar alarma
+		set_alarm((short) hora, (short) min);
 		return 1;
 	}
 	return 0; //Error

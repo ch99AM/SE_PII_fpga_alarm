@@ -13,6 +13,9 @@
 #include "alt_types.h"
 #include "sys/alt_irq.h"
 #include "altera_avalon_timer_regs.h"
+#include "app_clock_manager.h"
+#include "app_alarm.h"
+#include "app_leds_manager.h"
 
 void init_timer_irq();
 

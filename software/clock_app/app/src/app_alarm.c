@@ -18,7 +18,7 @@ void set_alarm(short hour, short minute) {
 int check_alarm(short hour, short minute) {
 	if (current_alarm.set == '1') {
 		if (current_alarm.minute == minute && current_alarm.hour == hour){
-			turn_on_alarm();
+			turn_on_aled();
 			return 0;
 		}
 		return -1;

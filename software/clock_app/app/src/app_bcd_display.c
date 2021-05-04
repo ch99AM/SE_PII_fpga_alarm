@@ -62,6 +62,7 @@ void display_minute(int number) {
 	number_to_bcd(number, seg_m1, seg_m2);
 }
 void display_second(int number) {
+	alt_putstr("hola\n");
 	number_to_bcd(number, seg_s1, seg_s2);
 }
 
