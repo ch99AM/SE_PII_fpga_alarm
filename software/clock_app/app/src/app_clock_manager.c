@@ -7,6 +7,7 @@
 
 #include "../include/app_clock_manager.h"
 #include "../include/app_bcd_display.h"
+#include "../include/app_alarm.h"
 
 void set_hour(short hour) {
 	current_time.hour = hour;
@@ -38,6 +39,7 @@ void increase_time() {
 			set_second(0);
 		}
 		display_minute(current_time.minute);
+		check_alarm(current_time.hour, current_time.minute);
 	} else {
 		set_second(current_time.second + 1);
 	}

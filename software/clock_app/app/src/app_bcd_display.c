@@ -56,13 +56,13 @@ void number_to_bcd(int number, int *segPointer1, int *segPointer2) {
 }
 
 void display_hour(int number) {
-	number_to_bcd(number, seg_h2, seg_h1);
+	number_to_bcd(number, seg_h1, seg_h2);
 }
 void display_minute(int number) {
-	number_to_bcd(number, seg_m2, seg_m1);
+	number_to_bcd(number, seg_m1, seg_m2);
 }
 void display_second(int number) {
-	number_to_bcd(number, seg_s2, seg_s1);
+	number_to_bcd(number, seg_s1, seg_s2);
 }
 
 void init_display() {
