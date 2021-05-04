@@ -9,22 +9,26 @@
 #define APP_INCLUDE_APP_UART_H_
 
 
-#include "stdbool.h"
+#include "altera_avalon_uart_regs.h"
 #include "system.h"
 #include "sys/alt_stdio.h"
-#include "stdio.h"
 #include "io.h"
 
-#define UART_BASE1 0x3000;
 
 unsigned char *read_buffer;
 unsigned char *write_buffer;
 
-bool is_readable();
-bool is_writable();
-unsigned char* read_rx();
-int write_tx(unsigned char *);
 
+int is_readable();
+int is_writable();
+unsigned char read_rx();
+int write_tx(unsigned char);
+
+int read_msg();
+int write_msg(unsigned char *, int);
+int break_check();
+int data_check(int, int, int, char);
+int time_formart(int, int);
 
 
 #endif /* APP_INCLUDE_APP_UART_H_ */
