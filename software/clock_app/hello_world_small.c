@@ -84,7 +84,7 @@
 
 int main()
 {
-  alt_putstr("Hello from Nios II!\n");
+//  alt_putstr("Hello from Nios II!\n");
 
   init_timer_irq();
   init_btns_irqs();

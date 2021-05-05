@@ -8,7 +8,7 @@
 #ifndef APP_INCLUDE_APP_BUTTONS_H_
 #define APP_INCLUDE_APP_BUTTONS_H_
 
-//#include "app_timer.h"
+#include "app_timer.h"
 #include "button_controller.h"
 #include "altera_avalon_pio_regs.h"
 

@@ -11,37 +11,37 @@ void deco_bcd(int number, int *segPointer) {
 
 	switch (number) {
 	case 0:
-		*segPointer = 126;
+		*segPointer = 1;
 		break;
 	case 1:
-		*segPointer = 48;
+		*segPointer = 79;
 		break;
 	case 2:
-		*segPointer = 109;
+		*segPointer = 18;
 		break;
 	case 3:
-		*segPointer = 121;
+		*segPointer = 6;
 		break;
 	case 4:
-		*segPointer = 51;
+		*segPointer = 76;
 		break;
 	case 5:
-		*segPointer = 91;
+		*segPointer = 36;
 		break;
 	case 6:
-		*segPointer = 95;
+		*segPointer = 32;
 		break;
 	case 7:
-		*segPointer = 112;
+		*segPointer = 15;
 		break;
 	case 8:
-		*segPointer = 127;
+		*segPointer = 0;
 		break;
 	case 9:
-		*segPointer = 123;
+		*segPointer = 4;
 		break;
 	default:
-		*segPointer = 123;
+		*segPointer = 126;
 		break;
 
 	}
@@ -62,7 +62,7 @@ void display_minute(int number) {
 	number_to_bcd(number, seg_m1, seg_m2);
 }
 void display_second(int number) {
-	alt_putstr("hola\n");
+//	alt_putstr("hola\n");
 	number_to_bcd(number, seg_s1, seg_s2);
 }
 

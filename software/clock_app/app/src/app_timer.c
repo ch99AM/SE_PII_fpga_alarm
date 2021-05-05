@@ -4,7 +4,7 @@
 void handle_timer_interrupts(void* context) {
 	IOWR_ALTERA_AVALON_TIMER_STATUS(TIMER_BASE, 0);
 	increase_time();
-	alt_putstr("Interrupts!\n");
+//	alt_putstr("Interrupts!\n");
 }
 
 void init_timer_irq() {
