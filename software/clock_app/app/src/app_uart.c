@@ -36,7 +36,11 @@ int break_check(){
 }
 
 unsigned char read_rx(){
-	while(is_readable()==0);
+	while(is_readable()==0){
+		if(break_check() == 1){
+			break;
+		}
+	}
 	if(is_readable()==1){
 		unsigned char cto_read;
 		//*pto_read = IORD(UART_BASE, 0);
@@ -51,7 +55,11 @@ unsigned char read_rx(){
 }
 
 int write_tx(unsigned char cmsg){
-	while(is_writable()==0);
+	while(is_writable()==0){
+		if(break_check() == 1){
+			break;
+		}
+	}
 	if(is_writable()==1){
 		//unsigned char *pto_write = (unsigned char*)UART_BASE1;
 		//IOWR(UART_BASE, 1, msg);

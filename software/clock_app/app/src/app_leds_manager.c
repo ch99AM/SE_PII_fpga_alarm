@@ -9,31 +9,29 @@
 #include "system.h"
 
 void turn_on_cled() {
-	*led_clock = '1';
+	*led_clock = 0x1;
 }
 void turn_off_cled() {
-	*led_clock = '0';
+	*led_clock = 0x0;
 }
 void turn_on_aled() {
-	*led_alarm = '1';
+	*led_alarm = 0x1;
 }
 void turn_off_aled() {
-	*led_alarm = '0';
+	*led_alarm = 0x0;
 }
 void turn_on_uled(){
-	*led_uart = '1';
+	*led_uart = 0x1;
 }
 void turn_off_uled(){
-	*led_uart = '0';
+	*led_uart = 0x0;
 }
 void turn_on_all() {
 	turn_on_cled();
-	turn_on_aled();
 	turn_on_uled();
 }
 void turn_off_all() {
 	turn_off_cled();
-	turn_off_aled();
 	turn_off_uled();
 }
 
