@@ -15,6 +15,8 @@
 #include "sys/alt_stdio.h"
 #include "io.h"
 
+unsigned char* uart_ptr;
+
 int is_readable();
 int is_writable();
 unsigned char read_rx();
@@ -25,5 +27,7 @@ int write_msg(unsigned char *, int);
 int break_check();
 int data_check(int, int, int, char);
 int time_formart(int, int);
+
+void init_uart();
 
 #endif /* APP_INCLUDE_APP_UART_H_ */

@@ -89,6 +89,7 @@ int main()
   init_timer_irq();
   init_btns_irqs();
   init_status();
+  init_uart();
 
   while (1);
 

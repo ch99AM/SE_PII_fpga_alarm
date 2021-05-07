@@ -17,6 +17,8 @@
 #include "app_alarm.h"
 #include "app_leds_manager.h"
 
+short* timer_ptr;
+
 void init_timer_irq();
 
 #endif /* APP_INCLUDE_APP_TIMER_H_ */
