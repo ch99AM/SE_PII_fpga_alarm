@@ -119,7 +119,6 @@ int read_msg(){
 		        	seg = format_time(seg, temp_read);
 		        	break;
 		        default:
-//		        	alt_putstr("Error! Position don't found");
 		        	break;
 		    }
 		}else if(temp_read == 58){

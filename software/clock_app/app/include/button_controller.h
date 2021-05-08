@@ -9,6 +9,9 @@
 #define APP_INCLUDE_BUTTON_CONTROLLER_H_
 
 #include "app_uart.h"
+#include "app_bcd_display.h"
+#include "app_clock_manager.h"
+#include "app_alarm.h"
 
 int mode;
 int id;

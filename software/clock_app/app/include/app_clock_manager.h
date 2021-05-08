@@ -20,6 +20,7 @@ char is_time_mode;
 void set_hour(short);
 void set_minute(short);
 void set_second(short);
+void set_clock_time(short, short, short);
 void set_time_mode_on();
 void set_time_mode_off();
 void increase_time();
