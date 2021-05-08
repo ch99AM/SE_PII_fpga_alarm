@@ -10,7 +10,7 @@ void init_timer_irq() {
 	init_hour(22, 59, 58);
 	init_leds();
 	set_alarm(23, 0);
-	timer_ptr = (int*)TIMER_BASE;
+	timer_ptr = (short*)TIMER_BASE;
 
 	alt_ic_isr_register(TIMER_IRQ_INTERRUPT_CONTROLLER_ID,
 	TIMER_IRQ, handle_timer_interrupts, 0x0, 0x0);
