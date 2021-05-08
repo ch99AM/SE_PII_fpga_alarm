@@ -13,7 +13,7 @@
 typedef struct Alarm{
 	short hour;
 	short minute;
-	char set;
+	short set;
 } Alarm;
 
 Alarm current_alarm;

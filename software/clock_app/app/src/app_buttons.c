@@ -10,36 +10,37 @@
 
 void handle_btn_conf_irs()
 {
-	IOWR_ALTERA_AVALON_PIO_EDGE_CAP(REG_BCONF_BASE, 0);
+	*(conf_ptr + 3) = 0x0;
 	change_mode();
-	IORD_ALTERA_AVALON_PIO_EDGE_CAP(REG_BCONF_BASE);
 }
 
 void handle_btn_up_irs()
 {
-	IOWR_ALTERA_AVALON_PIO_EDGE_CAP(REG_BUP_BASE, 0);
+	*(up_ptr + 3) = 0x0;
 	add_time();
-	IORD_ALTERA_AVALON_PIO_EDGE_CAP(REG_BUP_BASE);
 }
 
 void handle_btn_down_irs()
 {
-	IOWR_ALTERA_AVALON_PIO_EDGE_CAP(REG_BDOWN_BASE, 0);
+	*(down_ptr + 3) = 0x0;
 	substract_time();
-	IORD_ALTERA_AVALON_PIO_EDGE_CAP(REG_BDOWN_BASE);
 }
 
 void handle_btn_next_irs()
 {
-	IOWR_ALTERA_AVALON_PIO_EDGE_CAP(REG_BNEXT_BASE, 0);
+	*(next_ptr + 3) = 0x0;
 	next_var();
-	IORD_ALTERA_AVALON_PIO_EDGE_CAP(REG_BNEXT_BASE);
 }
 
 void init_btns_irqs()
 {
-    IOWR_ALTERA_AVALON_PIO_IRQ_MASK(REG_BCONF_BASE, 0xf);
-    IOWR_ALTERA_AVALON_PIO_EDGE_CAP(REG_BCONF_BASE, 0x0);
+	conf_ptr = (int*)REG_BCONF_BASE;
+	up_ptr = (int*)REG_BUP_BASE;
+	down_ptr = (int*)REG_BDOWN_BASE;
+	next_ptr = (int*)REG_BNEXT_BASE;
+
+	*(conf_ptr + 2) = 0x1;
+	*(conf_ptr + 3) = 0x0;
 	alt_ic_isr_register(
 			REG_BCONF_IRQ_INTERRUPT_CONTROLLER_ID,
 			REG_BCONF_IRQ,
@@ -48,8 +49,8 @@ void init_btns_irqs()
 			0x0
 	);
 
-    IOWR_ALTERA_AVALON_PIO_IRQ_MASK(REG_BUP_BASE, 0xf);
-    IOWR_ALTERA_AVALON_PIO_EDGE_CAP(REG_BUP_BASE, 0x0);
+	*(up_ptr + 2) = 0x1;
+	*(up_ptr + 3) = 0x0;
 	alt_ic_isr_register(
 			REG_BUP_IRQ_INTERRUPT_CONTROLLER_ID,
 			REG_BUP_IRQ,
@@ -58,8 +59,8 @@ void init_btns_irqs()
 			0x0
 	);
 
-    IOWR_ALTERA_AVALON_PIO_IRQ_MASK(REG_BDOWN_BASE, 0xf);
-    IOWR_ALTERA_AVALON_PIO_EDGE_CAP(REG_BDOWN_BASE, 0x0);
+	*(down_ptr + 2) = 0x1;
+	*(down_ptr + 3) = 0x0;
 	alt_ic_isr_register(
 			REG_BDOWN_IRQ_INTERRUPT_CONTROLLER_ID,
 			REG_BDOWN_IRQ,
@@ -68,8 +69,8 @@ void init_btns_irqs()
 			0x0
 	);
 
-    IOWR_ALTERA_AVALON_PIO_IRQ_MASK(REG_BNEXT_BASE, 0xf);
-    IOWR_ALTERA_AVALON_PIO_EDGE_CAP(REG_BNEXT_BASE, 0x0);
+	*(next_ptr + 2) = 0x1;
+	*(next_ptr + 3) = 0x0;
 	alt_ic_isr_register(
 			REG_BNEXT_IRQ_INTERRUPT_CONTROLLER_ID,
 			REG_BNEXT_IRQ,

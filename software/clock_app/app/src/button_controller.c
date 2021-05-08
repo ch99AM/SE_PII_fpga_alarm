@@ -23,7 +23,7 @@ void init_status()
 
 void change_mode()
 {
-	if(is_alarm_on() == '1')
+	if(is_alarm_on() == 0x1)
 		turn_off_aled();
 	else
 	{
@@ -64,7 +64,8 @@ void change_mode()
 		}
 		else if (mode == 3)
 		{
-			set_alarm(var_time.hour, var_time.minute);
+			if(changed == '1')
+				set_alarm(var_time.hour, var_time.minute);
 			current_var = &var_time;
 		}
 

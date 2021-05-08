@@ -77,8 +77,8 @@ void display_zeros() {
 void init_display() {
 	seg_h2 = (int *) (REG_H2_BASE);
 	seg_h1 = (int *) (REG_H1_BASE);
-	seg_m1 = (int *) (REG_M2_BASE);
-	seg_m2 = (int *) (REG_M1_BASE);
+	seg_m2 = (int *) (REG_M2_BASE);
+	seg_m1 = (int *) (REG_M1_BASE);
 	seg_s2 = (int *) (REG_S2_BASE);
 	seg_s1 = (int *) (REG_S1_BASE);
 }

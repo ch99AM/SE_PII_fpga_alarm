@@ -36,26 +36,37 @@ int break_check(){
 }
 
 unsigned char read_rx(){
-	while(is_readable()==0);
+	while(is_readable()==0){
+		if(break_check() == 1){
+			break;
+		}
+	}
 	if(is_readable()==1){
-		unsigned char cto_read;
+//		unsigned char cto_read;
 		//*pto_read = IORD(UART_BASE, 0);
 		//*pto_read = IORD_ALTERA_AVALON_UART_RXDATA(UART_BASE1)
 		//alt_putchar(*pto_read);
-		cto_read = IORD_ALTERA_AVALON_UART_RXDATA(UART_BASE);
-		write_tx(cto_read);
-		IOWR_ALTERA_AVALON_UART_STATUS(UART_BASE, '0');
-		return cto_read;
+//		cto_read = IORD_ALTERA_AVALON_UART_RXDATA(UART_BASE);
+//		cto_read = *(uart_ptr)
+		write_tx(*uart_ptr);
+		*(uart_ptr + 2) = 0x0;
+//		IOWR_ALTERA_AVALON_UART_STATUS(UART_BASE, '0');
+		return *uart_ptr;
 	}
 	return 0;
 }
 
 int write_tx(unsigned char cmsg){
-	while(is_writable()==0);
+	while(is_writable()==0){
+		if(break_check() == 1){
+			break;
+		}
+	}
 	if(is_writable()==1){
 		//unsigned char *pto_write = (unsigned char*)UART_BASE1;
 		//IOWR(UART_BASE, 1, msg);
-		IOWR_ALTERA_AVALON_UART_RXDATA(UART_BASE, cmsg);
+		*(uart_ptr + 1) = cmsg;
+//		IOWR_ALTERA_AVALON_UART_RXDATA(UART_BASE, cmsg);
 		return 1;
 	}
 	return 0;
@@ -135,4 +146,8 @@ int write_msg(unsigned char *msg, int len){
 		}
 	}
 	return 1;
+}
+
+void init_uart() {
+	uart_ptr = (unsigned char*)UART_BASE;
 }
