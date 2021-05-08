@@ -38,13 +38,17 @@ void change_mode()
 				turn_off_all();
 				break;
 			case 1:
+				set_time_mode_off();
+				display_zeros();
 				turn_on_cled();
 				break;
 			case 2:
+				display_zeros();
 				turn_on_uled();
 				turn_off_cled();
 				break;
 			case 3:
+				set_time_mode_on();
 				turn_on_cled();
 				read_msg();
 				break;

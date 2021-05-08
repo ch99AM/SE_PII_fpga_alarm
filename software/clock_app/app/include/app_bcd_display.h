@@ -19,9 +19,10 @@ int *seg_m2;
 int *seg_s2;
 int *seg_s1;
 
-void display_hour(int);
-void display_minute(int);
-void display_second(int);
+void display_hour(int, char);
+void display_minute(int, char);
+void display_second(int, char);
+void display_zeros();
 void init_display();
 
 #endif /* APP_INCLUDE_APP_BCD_DISPLAY_H_ */

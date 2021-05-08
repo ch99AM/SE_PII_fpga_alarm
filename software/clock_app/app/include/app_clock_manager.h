@@ -15,10 +15,13 @@ typedef struct Time {
 } Time;
 
 Time current_time;
+char is_time_mode;
 
 void set_hour(short);
 void set_minute(short);
 void set_second(short);
+void set_time_mode_on();
+void set_time_mode_off();
 void increase_time();
 void init_hour(short, short, short);
 

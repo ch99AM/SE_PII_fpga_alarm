@@ -33,28 +33,41 @@ void increase_time() {
 				set_minute(0);
 				set_second(0);
 			}
-			display_hour(current_time.hour);
+			display_hour(current_time.hour, is_time_mode);
 		} else {
 			set_minute(current_time.minute + 1);
 			set_second(0);
 		}
-		display_minute(current_time.minute);
+		display_minute(current_time.minute, is_time_mode);
 		check_alarm(current_time.hour, current_time.minute);
 	} else {
 		set_second(current_time.second + 1);
 	}
-	display_second(current_time.second);
+	display_second(current_time.second, is_time_mode);
 
 }
 
-void init_hour(short hour, short minute, short second) {
+void set_clock_time(short hour, short minute, short second) {
 	set_hour(hour);
 	set_minute(minute);
 	set_second(second);
+	set_time_mode_on();
+}
+
+void init_hour(short hour, short minute, short second) {
 	init_display();
-	display_hour(current_time.hour);
-	display_minute(current_time.minute);
-	display_second(current_time.second);
+	set_clock_time(hour, minute, second);
+}
+
+void set_time_mode_on() {
+	is_time_mode = '1';
+	display_hour(current_time.hour, is_time_mode);
+	display_minute(current_time.minute, is_time_mode);
+	display_second(current_time.second, is_time_mode);
+}
+
+void set_time_mode_off() {
+	is_time_mode = '0';
 }
 
 Time get_hour() {

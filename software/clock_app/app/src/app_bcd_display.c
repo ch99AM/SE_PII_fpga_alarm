@@ -55,15 +55,23 @@ void number_to_bcd(int number, int *segPointer1, int *segPointer2) {
 
 }
 
-void display_hour(int number) {
-	number_to_bcd(number, seg_h1, seg_h2);
+void display_hour(int number, char can_display) {
+	if (can_display == '1')
+		number_to_bcd(number, seg_h1, seg_h2);
 }
-void display_minute(int number) {
-	number_to_bcd(number, seg_m1, seg_m2);
+void display_minute(int number, char can_display) {
+	if (can_display == '1')
+		number_to_bcd(number, seg_m1, seg_m2);
 }
-void display_second(int number) {
-//	alt_putstr("hola\n");
-	number_to_bcd(number, seg_s1, seg_s2);
+void display_second(int number, char can_display) {
+	if (can_display == '1')
+		number_to_bcd(number, seg_s1, seg_s2);
+}
+
+void display_zeros() {
+	display_hour(0, '1');
+	display_minute(0, '1');
+	display_second(0, '1');
 }
 
 void init_display() {
