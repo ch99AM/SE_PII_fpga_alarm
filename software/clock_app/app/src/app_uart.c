@@ -36,11 +36,11 @@ int break_check(){
 }
 
 unsigned char read_rx(){
-	while(is_readable()==0){
-		if(break_check() == 1){
-			break;
-		}
-	}
+	//while(is_readable()==0){
+	//	if(break_check() == 1){
+	//		break;
+	//	}
+	//}
 	if(is_readable()==1){
 //		unsigned char cto_read;
 		//*pto_read = IORD(UART_BASE, 0);
@@ -48,23 +48,25 @@ unsigned char read_rx(){
 		//alt_putchar(*pto_read);
 //		cto_read = IORD_ALTERA_AVALON_UART_RXDATA(UART_BASE);
 //		cto_read = *(uart_ptr)
-		write_tx(*uart_ptr);
+		char temp_read = *uart_ptr;
+		write_tx(temp_read);
 		*(uart_ptr + 2) = 0x0;
 //		IOWR_ALTERA_AVALON_UART_STATUS(UART_BASE, '0');
-		return *uart_ptr;
+		return temp_read;
 	}
 	return 0;
 }
 
 int write_tx(unsigned char cmsg){
-	while(is_writable()==0){
-		if(break_check() == 1){
-			break;
-		}
-	}
+	//while(is_writable()==0){
+	//	if(break_check() == 1){
+	//		break;
+	//	}
+	//}
 	if(is_writable()==1){
 		//unsigned char *pto_write = (unsigned char*)UART_BASE1;
 		//IOWR(UART_BASE, 1, msg);
+		*(uart_ptr + 2) = 0x0;
 		*(uart_ptr + 1) = cmsg;
 //		IOWR_ALTERA_AVALON_UART_RXDATA(UART_BASE, cmsg);
 		return 1;
@@ -91,6 +93,7 @@ int format_time(int result, int number_char){
 	if (result != -1){
 		result = result*10;
 		result += number_char-48;
+		current_pos_conf++;
 	}else{
 		result = number_char-48;
 	}
@@ -98,44 +101,44 @@ int format_time(int result, int number_char){
 }
 
 int read_msg(){
-	char conf_type = read_rx();
-	int hora = -1; int min = -1; int seg = -1;
-	int temp_read; int current_position = 0;
-	while(1){
-		if(break_check()){
-			break;
-		}
-		temp_read = (int)read_rx();
+	char temp_read = read_rx();
+	if(current_pos_conf == 0){
+		reset_var_conf();
+		var_conf.type = temp_read;
+		current_pos_conf  = 1;
+	}
+	else if(current_pos_conf == 1){
 		if (temp_read >= 48 && temp_read <= 57){
-		    switch(current_position)
-		    {
-		        case 0:
-		            hora = format_time(hora, temp_read);
-		            break;
-		        case 1:
-		        	min = format_time(min, temp_read);
-		        	break;
-		        case 2:
-		        	seg = format_time(seg, temp_read);
-		        	break;
-		        default:
-		        	break;
-		    }
-		}else if(temp_read == 58){
-			current_position++;
+			var_conf.hour = (short)format_time((int)var_conf.hour, (int)temp_read);
 		}
 	}
-	if (!data_check(hora, min, seg, conf_type)){
+	else if(current_pos_conf == 2){
+		if (temp_read >= 48 && temp_read <= 57){
+			var_conf.min = (short)format_time((int)var_conf.min, (int)temp_read);
+		}
+	}
+	else if(current_pos_conf == 3){
+		if (temp_read >= 48 && temp_read <= 57){
+			var_conf.sec = (short)format_time((int)var_conf.sec, (int)temp_read);
+		}
+	}
+	if(var_conf.type == 'A' && current_pos_conf == 3){
+		if (data_check((int)var_conf.hour,(int)var_conf.min,-1, var_conf.type)){
+			set_alarm(var_conf.hour, var_conf.min);
+			reset_var_conf();
+			return 1;//Alarma
+		}
 		return 0;
 	}
-	if(conf_type == 'H' || conf_type == 'h'){
-		init_hour((short) hora, (short) min, (short) seg);
-		return 1;
-	}else if(conf_type == 'A' || conf_type == 'a'){
-		set_alarm((short) hora, (short) min);
-		return 1;
+	if(var_conf.type == 'H' && current_pos_conf == 4){
+		if (data_check((int)var_conf.hour,(int)var_conf.min,(int)var_conf.sec, var_conf.type)){
+			init_hour(var_conf.hour, var_conf.min, var_conf.sec);
+			reset_var_conf();
+			return 1;//Hora
+		}
+		return 0;
 	}
-	return 0; //Error
+	return 0; //Sin configuracion
 }
 
 int write_msg(unsigned char *msg, int len){
@@ -147,6 +150,28 @@ int write_msg(unsigned char *msg, int len){
 	return 1;
 }
 
+void reset_var_conf(){
+	var_conf.hour = -1;
+	var_conf.min = -1;
+	var_conf.sec = -1;
+	current_pos_conf = 0;
+}
+
 void init_uart() {
 	uart_ptr = (unsigned char*)UART_BASE;
+	reset_var_conf();
+
+	*(uart_ptr + 3) = 0xC0;
+
+	alt_ic_isr_register(
+			UART_IRQ_INTERRUPT_CONTROLLER_ID,
+			UART_IRQ,
+			handle_uart_irs,
+			0x0,
+			0x0
+	);
+}
+
+void handle_uart_irs(){
+	read_rx();
 }

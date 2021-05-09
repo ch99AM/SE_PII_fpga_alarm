@@ -14,13 +14,25 @@
 #include "system.h"
 #include "sys/alt_stdio.h"
 #include "io.h"
+#include "sys/alt_irq.h"
 
 unsigned char* uart_ptr;
+short current_pos_conf;
+
+struct Conf_msg{
+   char  type;
+   short  hour;
+   short  min;
+   short  sec;
+}conf_msg;
+
+struct Conf_msg var_conf;
 
 int is_readable();
 int is_writable();
 unsigned char read_rx();
 int write_tx(unsigned char);
+void reset_var_conf();
 
 int read_msg();
 int write_msg(unsigned char *, int);
@@ -29,5 +41,6 @@ int data_check(int, int, int, char);
 int time_formart(int, int);
 
 void init_uart();
+void handle_uart_irs();
 
 #endif /* APP_INCLUDE_APP_UART_H_ */
