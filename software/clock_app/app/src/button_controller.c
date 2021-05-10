@@ -62,10 +62,9 @@ void change_mode()
 				set_time_mode_on();
 				turn_on_cled();
 				if(changed == '1')
-					set_alarm(var_time.hour, var_time.minute);
+					set_alarm(var_alarm.hour, var_alarm.minute);
 				current_var = &var_time;
 				set_uart_mode(mode);
-//				read_msg();
 				break;
 			default:
 				break;
