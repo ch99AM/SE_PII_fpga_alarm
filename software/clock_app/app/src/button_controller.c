@@ -36,6 +36,7 @@ void change_mode()
 		{
 			case 0:
 				turn_off_all();
+				set_uart_mode(mode);
 				break;
 			case 1:
 				set_time_mode_off();
@@ -63,7 +64,8 @@ void change_mode()
 				if(changed == '1')
 					set_alarm(var_time.hour, var_time.minute);
 				current_var = &var_time;
-				read_msg();
+				set_uart_mode(mode);
+//				read_msg();
 				break;
 			default:
 				break;

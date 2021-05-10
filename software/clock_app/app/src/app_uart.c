@@ -132,7 +132,7 @@ int read_msg(){
 	}
 	if(var_conf.type == 'H' && current_pos_conf == 4){
 		if (data_check((int)var_conf.hour,(int)var_conf.min,(int)var_conf.sec, var_conf.type)){
-			init_hour(var_conf.hour, var_conf.min, var_conf.sec);
+			set_clock_time(var_conf.hour, var_conf.min, var_conf.sec);
 			reset_var_conf();
 			return 1;//Hora
 		}
@@ -170,8 +170,17 @@ void init_uart() {
 			0x0,
 			0x0
 	);
+	uart_mode = '0';
 }
 
 void handle_uart_irs(){
-	read_rx();
+	if(uart_mode == '1')
+		read_rx();
+}
+
+void set_uart_mode(int mode){
+	if(mode == 3)
+		uart_mode = '1';
+	else
+		uart_mode = '0';
 }

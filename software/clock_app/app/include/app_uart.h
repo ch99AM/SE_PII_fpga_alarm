@@ -18,6 +18,7 @@
 
 unsigned char* uart_ptr;
 short current_pos_conf;
+char uart_mode;
 
 struct Conf_msg{
    char  type;
@@ -42,5 +43,6 @@ int time_formart(int, int);
 
 void init_uart();
 void handle_uart_irs();
+void in_uart_mode(int);
 
 #endif /* APP_INCLUDE_APP_UART_H_ */
