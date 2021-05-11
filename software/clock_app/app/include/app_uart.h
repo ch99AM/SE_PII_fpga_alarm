@@ -16,7 +16,7 @@
 #include "io.h"
 #include "sys/alt_irq.h"
 
-unsigned char* uart_ptr;
+int* uart_ptr;
 short current_pos_conf;
 char uart_mode;
 
@@ -30,14 +30,11 @@ struct Conf_msg{
 struct Conf_msg var_conf;
 
 int is_readable();
-int is_writable();
 unsigned char read_rx();
-int write_tx(unsigned char);
+void write_tx(unsigned char);
 void reset_var_conf();
 
 int read_msg();
-int write_msg(unsigned char *, int);
-int break_check();
 int data_check(int, int, int, char);
 int time_formart(int, int);
 

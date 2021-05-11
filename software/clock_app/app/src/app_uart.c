@@ -9,69 +9,22 @@
 #include "sys/alt_stdio.h"
 
 int is_readable(){
-    unsigned char *prddy = (unsigned char*)UART_BASE;
-    prddy += 0x2;
-    if(*prddy & 0x80){
-        return 1;
-    }
-    return 0;
-}
-
-int is_writable(){
-    unsigned char *ptddy = (unsigned char*)UART_BASE;
-    ptddy += 0x2;
-    if(*ptddy & 0x40){
-        return 1;
-    }
-    return 0;
-}
-
-int break_check(){
-    unsigned char *ptddy = (unsigned char*)UART_BASE;
-    ptddy += 0x2;
-    if(*ptddy & 0x04){
+    if(*(uart_ptr + 2) & 0x80){
         return 1;
     }
     return 0;
 }
 
 unsigned char read_rx(){
-	//while(is_readable()==0){
-	//	if(break_check() == 1){
-	//		break;
-	//	}
-	//}
-//	if(is_readable()==1){
-//		unsigned char cto_read;
-		//*pto_read = IORD(UART_BASE, 0);
-		//*pto_read = IORD_ALTERA_AVALON_UART_RXDATA(UART_BASE1)
-		//alt_putchar(*pto_read);
-//		cto_read = IORD_ALTERA_AVALON_UART_RXDATA(UART_BASE);
-//		cto_read = *(uart_ptr)
-		char temp_read = *uart_ptr;
-		write_tx(temp_read);
-		*(uart_ptr + 4) = 0x0;
-//		IOWR_ALTERA_AVALON_UART_STATUS(UART_BASE, '0');
-		return temp_read;
-//	}
-	return 0;
+	char temp_read = *uart_ptr;
+	write_tx(temp_read);
+	*(uart_ptr + 2) = 0x0;
+	return temp_read;
 }
 
-int write_tx(unsigned char cmsg){
-	//while(is_writable()==0){
-	//	if(break_check() == 1){
-	//		break;
-	//	}
-	//}
-//	if(is_writable()==1){
-		//unsigned char *pto_write = (unsigned char*)UART_BASE1;
-		//IOWR(UART_BASE, 1, msg);
-		*(uart_ptr + 4) = 0x0;
-		*(uart_ptr + 2) = cmsg;
-//		IOWR_ALTERA_AVALON_UART_RXDATA(UART_BASE, cmsg);
-		return 1;
-//	}
-	return 0;
+void write_tx(unsigned char cmsg){
+	*(uart_ptr + 2) = 0x0;
+	*(uart_ptr + 1) = cmsg;
 }
 
 int data_check(int hora, int min, int seg, char conf_type){
@@ -102,12 +55,14 @@ int format_time(int result, int number_char){
 
 int read_msg(){
 	char temp_read = read_rx();
-	alt_printf("%s\n", temp_read);
+	if (temp_read == 'H' || temp_read == 'A'){
+		reset_var_conf();
+	}
 	if(current_pos_conf == 0){
 		reset_var_conf();
+		write_tx('\n');
 		var_conf.type = temp_read;
 		current_pos_conf  = 1;
-		alt_putstr("algo\n");
 	}
 	else if(current_pos_conf == 1){
 		if (temp_read >= 48 && temp_read <= 57){
@@ -128,6 +83,7 @@ int read_msg(){
 		if (data_check((int)var_conf.hour,(int)var_conf.min,-1, var_conf.type)){
 			set_alarm(var_conf.hour, var_conf.min);
 			reset_var_conf();
+			write_tx('\n');
 			return 1;//Alarma
 		}
 		return 0;
@@ -136,20 +92,12 @@ int read_msg(){
 		if (data_check((int)var_conf.hour,(int)var_conf.min,(int)var_conf.sec, var_conf.type)){
 			set_clock_time(var_conf.hour, var_conf.min, var_conf.sec);
 			reset_var_conf();
+			write_tx('\n');
 			return 1;//Hora
 		}
 		return 0;
 	}
 	return 0; //Sin configuracion
-}
-
-int write_msg(unsigned char *msg, int len){
-	for (int var = 0; var < len; ++var) {
-		if (!write_tx(msg[var])){
-			return 0; //Error
-		}
-	}
-	return 1;
 }
 
 void reset_var_conf(){
@@ -160,10 +108,10 @@ void reset_var_conf(){
 }
 
 void init_uart() {
-	uart_ptr = (unsigned char*)UART_BASE;
+	uart_ptr = (int*)UART_BASE;
 	reset_var_conf();
 
-	*(uart_ptr + 6) = 0xC0;
+	*(uart_ptr + 3) = 0x80;
 
 	alt_ic_isr_register(
 			UART_IRQ_INTERRUPT_CONTROLLER_ID,
@@ -176,11 +124,10 @@ void init_uart() {
 }
 
 void handle_uart_irs(){
-	alt_putstr("IRQ UART\n");
-	if(uart_mode == '1') {
-		alt_putstr("IRS UART\n");
+	if(uart_mode == '1' && is_readable()) {
 		read_msg();
 	}
+	*(uart_ptr + 2) = 0x0;
 }
 
 void set_uart_mode(int mode){
